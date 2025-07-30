@@ -1,6 +1,7 @@
 #pragma once
 
 #include "window.hpp"
+#include "pipeline.hpp"
 
 class FirstApp{
     public:
@@ -10,4 +11,5 @@ class FirstApp{
         void run();
     private:
         Window window{WIDTH, HEIGHT, "cpp is hard"};
+        PipeLine pipeLine{"shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv"};
 };
