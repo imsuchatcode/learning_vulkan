@@ -4,10 +4,11 @@
 #include <stdexcept>
 #include <iostream>
 
-PipeLine::PipeLine(const std::string &vertFilepath, const std::string &fragFilepath){
+PipeLine::PipeLine(Device& device, const std::string &vertFilepath, const std::string &fragFilepath, const PipelineConfigInfo &configInfo) : Device{device} {
     createGraphicsPipeLine(vertFilepath, fragFilepath);
 }
 
+// a function that read frag file and vertex file
 std::vector<char> PipeLine::readFile(const std::string& filepath){
 
     std::ifstream file(filepath, std::ios::ate | std::ios::binary);
@@ -26,6 +27,7 @@ std::vector<char> PipeLine::readFile(const std::string& filepath){
     return buffer;
 }
 
+//output formated fragment and vertex file
 void PipeLine::createGraphicsPipeLine(const std::string &vertFilepath, const std::string &fragFilepath){
     auto vertCode = readFile(vertFilepath);
     auto fragCode = readFile(fragFilepath);

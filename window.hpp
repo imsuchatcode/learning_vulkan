@@ -2,8 +2,8 @@
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h> 
-
 #include <string>
+#include <vulkan/vulkan.h>
 
 class Window
 {
@@ -15,6 +15,8 @@ public:
     Window &operator=(const Window &) = delete;
     
     bool shouldClose(){return glfwWindowShouldClose(window);}
+
+    void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
 
 private:
     void initwindow();
