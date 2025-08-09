@@ -2,6 +2,7 @@
 
 #include "window.hpp"
 #include "pipeline.hpp"
+#include "device.hpp"
 
 class FirstApp{
     public:
@@ -11,5 +12,6 @@ class FirstApp{
         void run();
     private:
         Window window{WIDTH, HEIGHT, "cpp is hard"};
-        PipeLine pipeLine{"shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv"};
+        Device device{window};
+        PipeLine pipeLine{device,"shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv", PipeLine::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
 };

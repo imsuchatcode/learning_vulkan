@@ -10,12 +10,12 @@ class PipeLine
 {
 public:
     PipeLine(Device& device,const std::string& vertFilepath, const std::string& fragFilepath, const PipelineConfigInfo& configInfo);
-    ~PipeLine() {};
+    ~PipeLine() {}
 
     PipeLine(const PipeLine&) = delete;
     void operator = (const PipeLine&) = delete;
 
-    static PipelineConfigInfo defualtPipelineConfigInfo(uint32_t width, uint32_t height);
+    static PipelineConfigInfo defaultPipelineConfigInfo(uint32_t width, uint32_t height);
     
 private:
     static std::vector<char> readFile (const std::string& filepath);
@@ -24,7 +24,7 @@ private:
 
     void createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule);
 
-    Device& devide;
+    Device& device;
     VkPipeline graphicsPipeLine;
     VkShaderModule vertShaderModule;
     VkShaderModule fragShaderModule;
