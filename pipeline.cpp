@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <iostream>
 
-PipeLine::PipeLine(Device& device, const std::string &vertFilepath, const std::string &fragFilepath, const PipelineConfigInfo &configInfo) : Device{device} {
+PipeLine::PipeLine(Device& device, const std::string &vertFilepath, const std::string &fragFilepath, const PipelineConfigInfo &configInfo) : device{device} {
     createGraphicsPipeLine(vertFilepath, fragFilepath, configInfo);
 }
 
@@ -42,7 +42,7 @@ void PipeLine::createShaderModule(const std::vector<char>& code, VkShaderModule*
     createInfo.codeSize = code.size();
     createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
 
-    if (vkCreateShaderModule(Device.device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS){
+    if (vkCreateShaderModule(device.device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS){
         throw std::runtime_error("fail to create shader");
     }
 }
