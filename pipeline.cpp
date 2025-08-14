@@ -65,7 +65,7 @@ void PipeLine::createGraphicsPipeLine(const std::string &vertFilepath, const std
     shaderStage[1].pSpecializationInfo = nullptr;
 
     VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
-    vertexInputInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+    vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
     vertexInputInfo.vertexAttributeDescriptionCount = 0;
     vertexInputInfo.vertexBindingDescriptionCount = 0;
     vertexInputInfo.pVertexAttributeDescriptions = nullptr;

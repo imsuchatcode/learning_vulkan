@@ -2,7 +2,6 @@
 #include "first_app.hpp"
 
 #include <stdexcept>
-#include <memory>
 
 FirstApp::FirstApp(){
     createPipelineLayout();
@@ -38,8 +37,9 @@ void FirstApp::createPipeline(){
     auto pipelineConfig = PipeLine::defaultPipelineConfigInfo(swapChain.width(),swapChain.height());
     pipelineConfig.renderPass = swapChain.getRenderPass();
     pipelineConfig.pipelineLayout = pipelineLayout;
-    PipeLine = std::make_unique<PipeLine>(device, "shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv", pipelineConfig);
+    // using the same name can lead to confusion
+    myPipeLine = std::make_unique<PipeLine>(device, "shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv", pipelineConfig);
 }
 
-void FirstApp::createCommandBuffers(){};
-void FirstApp::drawFrame(){};
+void FirstApp::createCommandBuffers(){}
+void FirstApp::drawFrame(){}
