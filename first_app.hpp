@@ -14,6 +14,7 @@ class FirstApp{
     private:
         Window window{WIDTH, HEIGHT, "cpp is hard"};
         Device device{window};
+        // currently using mailbox not vsync(fifo) will chain if run into error
         SwapChain swapChain{device, window.getExtend()};
         PipeLine pipeLine{device,"shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv", PipeLine::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
 };

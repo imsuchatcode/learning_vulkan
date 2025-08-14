@@ -71,13 +71,20 @@ void PipeLine::createGraphicsPipeLine(const std::string &vertFilepath, const std
     vertexInputInfo.pVertexAttributeDescriptions = nullptr;
     vertexInputInfo.pVertexBindingDescriptions = nullptr;
 
+    VkPipelineViewportStateCreateInfo viewportInfo{};
+    viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+    viewportInfo.viewportCount = 1;
+    viewportInfo.pViewports = &configInfo.viewport;
+    viewportInfo.scissorCount = 1;
+    viewportInfo.pScissors = &configInfo.scissor;
+
     VkGraphicsPipelineCreateInfo pipelineInfo{};
     pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
     pipelineInfo.stageCount = 2;
     pipelineInfo.pStages = shaderStage;
     pipelineInfo.pVertexInputState = &vertexInputInfo;
     pipelineInfo.pInputAssemblyState = &configInfo.inputAssemblyInfo;
-    pipelineInfo.pViewportState = &configInfo.viewportInfo;
+    pipelineInfo.pViewportState = &viewportInfo;
     pipelineInfo.pRasterizationState = &configInfo.rasterizationInfo;
     pipelineInfo.pMultisampleState = &configInfo.multisampleInfo;
 
@@ -91,7 +98,7 @@ void PipeLine::createGraphicsPipeLine(const std::string &vertFilepath, const std
 
     pipelineInfo.basePipelineIndex = -1;
     pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
-    if (vkCreateGraphicsPipelines(device.device(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeLine))
+    if (vkCreateGraphicsPipelines(device.device(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeLine) != VK_SUCCESS)
     {
         throw std::runtime_error("unable to create pipeline");
     }
@@ -128,12 +135,6 @@ PipelineConfigInfo PipeLine::defaultPipelineConfigInfo(uint32_t width, uint32_t 
     //use for cut screen
     configInfo.scissor.offset = {0, 0};
     configInfo.scissor.extent = {width, height};
-
-    configInfo.viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-    configInfo.viewportInfo.viewportCount = 1;
-    configInfo.viewportInfo.pViewports = &configInfo.viewport;
-    configInfo.viewportInfo.scissorCount = 1;
-    configInfo.viewportInfo.pScissors = &configInfo.scissor;
 
     //break up geometry info into fragments for each pixel or trangle overlap
     configInfo.rasterizationInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
@@ -173,6 +174,7 @@ PipelineConfigInfo PipeLine::defaultPipelineConfigInfo(uint32_t width, uint32_t 
     configInfo.colorBlendInfo.logicOpEnable = VK_FALSE;
     configInfo.colorBlendInfo.logicOp = VK_LOGIC_OP_COPY; // Optional
     configInfo.colorBlendInfo.attachmentCount = 1;
+    // this is also a pointer why it isnt bug (copying the same init struct => dealocating memory ?)
     configInfo.colorBlendInfo.pAttachments = &configInfo.colorBlendAttachment;
     configInfo.colorBlendInfo.blendConstants[0] = 0.0f; // Optional
     configInfo.colorBlendInfo.blendConstants[1] = 0.0f; // Optional
