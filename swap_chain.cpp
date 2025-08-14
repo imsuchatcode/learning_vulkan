@@ -1,4 +1,4 @@
-#include "my_engine_swap_chain.hpp"
+#include "swap_chain.hpp"
 
 // std
 #include <array>
@@ -9,10 +9,9 @@
 #include <set>
 #include <stdexcept>
 
-namespace lve {
-
- SwapChain:: SwapChain( Device &deviceRef, VkExtent2D extent)
-    : device{deviceRef}, windowExtent{extent} {
+SwapChain::SwapChain(Device &deviceRef, VkExtent2D extent)
+    : device{deviceRef}, windowExtent{extent}
+{
   createSwapChain();
   createImageViews();
   createRenderPass();
@@ -414,4 +413,3 @@ VkFormat  SwapChain::findDepthFormat() {
       VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT);
 }
 
-}  // namespace lve

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lve_device.hpp"
+#include "device.hpp"
 
 // vulkan headers
 #include <vulkan/vulkan.h>
@@ -8,8 +8,6 @@
 // std lib headers
 #include <string>
 #include <vector>
-
-namespace lve {
 
 class  SwapChain {
  public:
@@ -77,4 +75,3 @@ class  SwapChain {
   size_t currentFrame = 0;
 };
 
-}  // namespace lve
