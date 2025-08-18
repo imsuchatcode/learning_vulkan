@@ -41,5 +41,10 @@ void FirstApp::createPipeline(){
     myPipeLine = std::make_unique<PipeLine>(device, "shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv", pipelineConfig);
 }
 
-void FirstApp::createCommandBuffers(){}
+void FirstApp::createCommandBuffers(){
+    commandBuffer.resize(swapChain.imageCount());
+    VkCommandBufferAllocateInfo allocInfo{};
+
+}
+
 void FirstApp::drawFrame(){}
