@@ -27,6 +27,8 @@ public:
     PipeLine(const PipeLine&) = delete;
     void operator = (const PipeLine&) = delete;
 
+    void bind(VkCommandBuffer commandBuffer);
+
     // return a PipelineConfigInfo but not passing in PipeLine init how can it take the argument ?
     static PipelineConfigInfo defaultPipelineConfigInfo(uint32_t width, uint32_t height);
     

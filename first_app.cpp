@@ -18,6 +18,7 @@ void FirstApp::run() {
     while (!window.shouldClose())
     {
         glfwPollEvents();
+        drawFrame();
     }
 
 }
@@ -78,7 +79,27 @@ void FirstApp::createCommandBuffers(){
         renderPassInfo.pClearValues = clearValues.data();
 
         vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+        
+        myPipeLine->bind(commandBuffers[i]);
+        vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
+
+        vkCmdEndRenderPass(commandBuffers[i]);
+        if (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS){
+            throw std::runtime_error("fail to end command buffer");
+        }
     }
 }
 
-void FirstApp::drawFrame(){}
+void FirstApp::drawFrame(){
+    uint32_t imageIndex;
+    auto result = swapChain.acquireNextImage(&imageIndex);
+
+    if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR){
+        throw std::runtime_error("failed to aquire swap chain image");
+    }
+
+    result = swapChain.submitCommandBuffers(&commandBuffers[imageIndex], &imageIndex);
+    if (result != VK_SUCCESS){
+        throw std::runtime_error("failed to present swap chain image");
+    }
+}
