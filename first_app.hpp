@@ -33,5 +33,5 @@ class FirstApp{
         SwapChain swapChain{device, window.getExtend()};
         std::unique_ptr<PipeLine> myPipeLine;
         VkPipelineLayout pipelineLayout;
-        std::vector<VkCommandBuffer> commandBuffer;
+        std::vector<VkCommandBuffer> commandBuffers;
 };
