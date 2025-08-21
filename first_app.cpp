@@ -36,6 +36,7 @@ void FirstApp::createPipelineLayout(){
 }
 
 void FirstApp::createPipeline(){
+    // why use swapchain width and height ?
     auto pipelineConfig = PipeLine::defaultPipelineConfigInfo(swapChain.width(),swapChain.height());
     pipelineConfig.renderPass = swapChain.getRenderPass();
     pipelineConfig.pipelineLayout = pipelineLayout;
