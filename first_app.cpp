@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <array>
 
+namespace my{
+
 FirstApp::FirstApp(){
     createPipelineLayout();
     createPipeline();
@@ -103,4 +105,6 @@ void FirstApp::drawFrame(){
     if (result != VK_SUCCESS){
         throw std::runtime_error("failed to present swap chain image");
     }
+}
+
 }

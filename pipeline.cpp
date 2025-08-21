@@ -1,10 +1,12 @@
 #include "pipeline.hpp"
+#include "my_model.hpp"
 
 #include <fstream>
 #include <stdexcept>
 #include <iostream>
 #include <cassert>
 
+namespace my{
 PipeLine::PipeLine(Device &device, const std::string &vertFilepath, const std::string &fragFilepath, const PipelineConfigInfo &configInfo) : device{device}{
     createGraphicsPipeLine(vertFilepath, fragFilepath, configInfo);
 }
@@ -63,6 +65,9 @@ void PipeLine::createGraphicsPipeLine(const std::string &vertFilepath, const std
     shaderStage[1].flags = 0;
     shaderStage[1].pNext = nullptr;
     shaderStage[1].pSpecializationInfo = nullptr;
+
+    auto bindingDecription = myModel::Vertex::getBindingDescriptions();
+    
 
     VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
     vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
@@ -198,4 +203,5 @@ PipelineConfigInfo PipeLine::defaultPipelineConfigInfo(uint32_t width, uint32_t 
     configInfo.depthStencilInfo.back = {};  // Optional
 
     return configInfo;
+}
 }

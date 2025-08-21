@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 
+namespace my{
 class FirstApp{
     public:
         static constexpr int WIDTH = 800;
@@ -35,3 +36,5 @@ class FirstApp{
         VkPipelineLayout pipelineLayout;
         std::vector<VkCommandBuffer> commandBuffers;
 };
+
+}

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+namespace my{
 struct PipelineConfigInfo {
   VkViewport viewport;
   VkRect2D scissor;
@@ -45,3 +46,4 @@ private:
     VkShaderModule fragShaderModule;
 };
 
+}

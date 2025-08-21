@@ -4,6 +4,8 @@
 #include <iostream>
 #include <stdexcept>
 
+namespace my{
+
 int main(){
 
     FirstApp app{};
@@ -18,4 +20,6 @@ int main(){
     }
 
     return EXIT_SUCCESS;
+}
+
 }
