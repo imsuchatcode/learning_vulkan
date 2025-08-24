@@ -4,15 +4,15 @@
 #include <cstring>
 
 namespace my{
-    myModel::myModel(Device &device, const std::vector<Vertex> &vertices) : myDevice{device} {
+    MyModel::MyModel(Device &device, const std::vector<Vertex> &vertices) : myDevice{device} {
         createVertexBuffers(vertices);
     }
-    myModel::~myModel(){
+    MyModel::~MyModel(){
         vkDestroyBuffer(myDevice.device(), vertexBuffer, nullptr);
         vkFreeMemory(myDevice.device(), vertexBufferMemory, nullptr);
     }
 
-    void myModel::createVertexBuffers(const std::vector<Vertex> &vertices){
+    void MyModel::createVertexBuffers(const std::vector<Vertex> &vertices){
         vertexCount = static_cast<uint32_t>(vertices.size());
         assert(vertexCount >= 3 && "vertex count must at least be 3");
         VkDeviceSize bufferSize = sizeof(vertices[0]) * vertexCount;
@@ -24,26 +24,26 @@ namespace my{
         vkUnmapMemory(myDevice.device(), vertexBufferMemory);
     }
 
-    void myModel::draw(VkCommandBuffer commandBuffer){
+    void MyModel::draw(VkCommandBuffer commandBuffer){
         vkCmdDraw(commandBuffer, vertexCount, 1, 0, 0); 
 
     }
 
-    void myModel::bind(VkCommandBuffer commandBuffer){
+    void MyModel::bind(VkCommandBuffer commandBuffer){
         VkBuffer buffers[] = {vertexBuffer};
         VkDeviceSize offsets[] = {0};
         
         vkCmdBindVertexBuffers(commandBuffer, 0, 1, buffers, offsets);
     }
 
-    std::vector<VkVertexInputBindingDescription> myModel::Vertex::getBindingDescriptions(){
+    std::vector<VkVertexInputBindingDescription> MyModel::Vertex::getBindingDescriptions(){
         std::vector<VkVertexInputBindingDescription> bindingDescription(1);
         bindingDescription[0].binding = 0;
         bindingDescription[0].inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
         bindingDescription[0].stride = sizeof(Vertex);
         return bindingDescription;
     }
-    std::vector<VkVertexInputAttributeDescription> myModel::Vertex::getAttributeDescriptions(){
+    std::vector<VkVertexInputAttributeDescription> MyModel::Vertex::getAttributeDescriptions(){
         std::vector<VkVertexInputAttributeDescription> attributeDescription(1);
         attributeDescription[0].binding = 0;
         attributeDescription[0].format = VK_FORMAT_R32G32_SFLOAT;

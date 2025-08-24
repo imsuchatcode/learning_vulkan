@@ -3,10 +3,12 @@
 
 #include <stdexcept>
 #include <array>
+#include <memory>
 
 namespace my{
 
 FirstApp::FirstApp(){
+    loadModel();
     createPipelineLayout();
     createPipeline();
     createCommandBuffers();
@@ -24,6 +26,12 @@ void FirstApp::run() {
     }
     vkDeviceWaitIdle(device.device());
 }
+
+void FirstApp::loadModel(){
+    std::vector<MyModel::Vertex> vertices = {{{0.0f, 0.5f}}, {{0.5f, 0.5f}}, {{-0.5f, 0.5f}}};
+    myModel = std::make_unique<MyModel>(device, vertices);
+}
+
 void FirstApp::createPipelineLayout(){
     VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -84,7 +92,8 @@ void FirstApp::createCommandBuffers(){
         vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
         
         myPipeLine->bind(commandBuffers[i]);
-        vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
+        myModel->bind(commandBuffers[i]);
+        myModel->draw(commandBuffers[i]);
 
         vkCmdEndRenderPass(commandBuffers[i]);
         if (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS){

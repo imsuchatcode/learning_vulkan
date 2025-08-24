@@ -4,11 +4,10 @@
 #include <iostream>
 #include <stdexcept>
 
-namespace my{
 
 int main(){
 
-    FirstApp app{};
+    my::FirstApp app{};
 
     try
     {
@@ -20,6 +19,4 @@ int main(){
     }
 
     return EXIT_SUCCESS;
-}
-
 }

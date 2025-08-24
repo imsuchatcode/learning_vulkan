@@ -1,13 +1,28 @@
+include .env
+
 CFLAGS = -std=c++17 -O2
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
-VulkanTest.out: *.cpp *.hpp
-	g++ $(CFLAGS) -o VulkanTest.out *.cpp $(LDFLAGS)
+# create list of all spv files and set as dependency
+vertSources = $(shell find ./shaders -type f -name "*.vert")
+vertObjFiles = $(patsubst %.vert, %.vert.spv, $(vertSources))
+fragSources = $(shell find ./shaders -type f -name "*.frag")
+fragObjFiles = $(patsubst %.frag, %.frag.spv, $(fragSources))
+
+TARGET = VulkanOut.out
+$(TARGET): $(vertObjFiles) $(fragObjFiles)
+$(TARGET): *.cpp *.hpp
+	g++ $(CFLAGS) -o $(TARGET) *.cpp $(LDFLAGS)
+
+# make shader targets
+%.spv: %
+	${GLSLC} $< -o $@
 
 .PHONY: test clean
 
-test: VulkanTest.out
-	./VulkanTest.out
+test: VulkanOut.out
+	./VulkanOut.out
 
 clean:
-	rm -f VulkanTest.out 
+	rm -f VulkanOut.out
+	rm -f *.spv

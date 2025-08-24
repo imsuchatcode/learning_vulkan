@@ -66,15 +66,15 @@ void PipeLine::createGraphicsPipeLine(const std::string &vertFilepath, const std
     shaderStage[1].pNext = nullptr;
     shaderStage[1].pSpecializationInfo = nullptr;
 
-    auto bindingDecription = myModel::Vertex::getBindingDescriptions();
-    
+    auto bindingDecription = MyModel::Vertex::getBindingDescriptions();
+    auto attributeDecription = MyModel::Vertex::getAttributeDescriptions();
 
     VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
     vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-    vertexInputInfo.vertexAttributeDescriptionCount = 0;
-    vertexInputInfo.vertexBindingDescriptionCount = 0;
-    vertexInputInfo.pVertexAttributeDescriptions = nullptr;
-    vertexInputInfo.pVertexBindingDescriptions = nullptr;
+    vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDecription.size());
+    vertexInputInfo.vertexBindingDescriptionCount = static_cast<uint32_t>(bindingDecription.size());
+    vertexInputInfo.pVertexAttributeDescriptions = attributeDecription.data();
+    vertexInputInfo.pVertexBindingDescriptions = bindingDecription.data();
 
     VkPipelineViewportStateCreateInfo viewportInfo{};
     viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;

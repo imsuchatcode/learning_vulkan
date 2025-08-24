@@ -10,7 +10,7 @@
 
 namespace my{
     //copy vertex data from the cpu and transfer it to the gpu
-    class myModel{
+    class MyModel{
         public:
             struct Vertex{
                 glm::vec2 position;
@@ -19,11 +19,11 @@ namespace my{
                 static std::vector<VkVertexInputAttributeDescription> getAttributeDescriptions();
             };
             
-            myModel(Device &device, const std::vector<Vertex> &vertices);
-            ~myModel();
+            MyModel(Device &device, const std::vector<Vertex> &vertices);
+            ~MyModel();
 
-            myModel(const myModel &) = delete;
-            myModel &operator=(const myModel &) = delete;
+            MyModel(const MyModel &) = delete;
+            MyModel &operator=(const MyModel &) = delete;
 
             void bind(VkCommandBuffer commandBuffer);
             void draw(VkCommandBuffer commandBuffer);
