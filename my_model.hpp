@@ -22,6 +22,7 @@ namespace my{
             MyModel(Device &device, const std::vector<Vertex> &vertices);
             ~MyModel();
 
+            // must delete copy because it MyModel mangage buffer and memory object
             MyModel(const MyModel &) = delete;
             MyModel &operator=(const MyModel &) = delete;
 

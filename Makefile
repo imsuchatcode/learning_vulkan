@@ -1,6 +1,4 @@
-include .env
-
-CFLAGS = -std=c++17 -O2
+CFLAGS = -std=c++17 -O2 
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
 # create list of all spv files and set as dependency
@@ -16,7 +14,7 @@ $(TARGET): *.cpp *.hpp
 
 # make shader targets
 %.spv: %
-	${GLSLC} $< -o $@
+	glslc $< -o $@
 
 .PHONY: test clean
 

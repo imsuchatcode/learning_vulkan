@@ -28,7 +28,10 @@ void FirstApp::run() {
 }
 
 void FirstApp::loadModel(){
-    std::vector<MyModel::Vertex> vertices = {{{0.0f, 0.5f}}, {{0.5f, 0.5f}}, {{-0.5f, 0.5f}}};
+    std::vector<MyModel::Vertex> vertices = {
+        {{0.0f, -0.5f}}, 
+        {{0.5f, 0.5f}},  
+        {{-0.5f, 0.5f}}};
     myModel = std::make_unique<MyModel>(device, vertices);
 }
 
