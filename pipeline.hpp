@@ -6,14 +6,19 @@
 
 namespace my{
 struct PipelineConfigInfo {
-  VkViewport viewport;
-  VkRect2D scissor;
+  PipelineConfigInfo() = default;
+  PipelineConfigInfo(const PipelineConfigInfo&) = delete;
+  PipelineConfigInfo& operator=(const PipelineConfigInfo&) = delete;
+
+  VkPipelineViewportStateCreateInfo viewportInfo;
   VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
   VkPipelineRasterizationStateCreateInfo rasterizationInfo;
   VkPipelineMultisampleStateCreateInfo multisampleInfo;
   VkPipelineColorBlendAttachmentState colorBlendAttachment;
   VkPipelineColorBlendStateCreateInfo colorBlendInfo;
   VkPipelineDepthStencilStateCreateInfo depthStencilInfo;
+  std::vector<VkDynamicState> dynamicStateEnables;
+  VkPipelineDynamicStateCreateInfo dynamicStateInfo;
   VkPipelineLayout pipelineLayout = nullptr;
   VkRenderPass renderPass = nullptr;
   uint32_t subpass = 0;
@@ -28,22 +33,21 @@ public:
     PipeLine(const PipeLine&) = delete;
     PipeLine& operator = (const PipeLine&) = delete;
 
-    void bind(VkCommandBuffer commandBuffer);
-
     // return a PipelineConfigInfo but not passing in PipeLine init how can it take the argument ?
-    static PipelineConfigInfo defaultPipelineConfigInfo(uint32_t width, uint32_t height);
-    
+    static void defaultPipelineConfigInfo(PipelineConfigInfo& configInfo);
+
+    void bind(VkCommandBuffer commandBuffer);
 private:
-    static std::vector<char> readFile (const std::string& filepath);
+  static std::vector<char> readFile(const std::string &filepath);
 
-    void createGraphicsPipeLine(const std::string& vertFilepath, const std::string& fragFilepath, const PipelineConfigInfo& configInfo);
+  void createGraphicsPipeLine(const std::string &vertFilepath, const std::string &fragFilepath, const PipelineConfigInfo &configInfo);
 
-    void createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule);
+  void createShaderModule(const std::vector<char> &code, VkShaderModule *shaderModule);
 
-    Device& device;
-    VkPipeline graphicsPipeLine;
-    VkShaderModule vertShaderModule;
-    VkShaderModule fragShaderModule;
+  Device &device;
+  VkPipeline graphicsPipeLine;
+  VkShaderModule vertShaderModule;
+  VkShaderModule fragShaderModule;
 };
 
 }
