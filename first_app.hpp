@@ -19,7 +19,7 @@ class FirstApp{
         ~FirstApp();
 
         FirstApp(const FirstApp &) = delete;
-        FirstApp &operator=(const FirstApp &) = delete;
+        FirstApp& operator=(const FirstApp &) = delete;
 
         void run();
 
@@ -29,11 +29,14 @@ class FirstApp{
         void createPipeline();
         void createCommandBuffers();
         void drawFrame();
+        void recreateSwapChain();
+        void recordCommandBuffer(int imageIndex);
 
         Window window{WIDTH, HEIGHT, "cpp is hard"};
         Device device{window};
-        // currently using mailbox not vsync(fifo) will chain if run into error
-        SwapChain swapChain{device, window.getExtend()};
+        // currently using mailbox not vsync(fifo) will change if run into error
+        // use pointer to easily delete and recreate for window resize
+        std::unique_ptr<SwapChain> mySwapChain;
         std::unique_ptr<PipeLine> myPipeLine;
         VkPipelineLayout pipelineLayout;
         std::vector<VkCommandBuffer> commandBuffers;

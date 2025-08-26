@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+namespace my{
+  
 struct SwapChainSupportDetails{
   VkSurfaceCapabilitiesKHR capabilities;
   std::vector<VkSurfaceFormatKHR> formats;
@@ -33,7 +35,7 @@ class Device {
 
   // Not copyable or movable
   Device(const Device &) = delete;
-  void operator=(const Device &) = delete;
+  Device operator=(const Device &) = delete;
   Device(Device &&) = delete;
   Device &operator=(Device &&) = delete;
 
@@ -102,3 +104,5 @@ class Device {
   const std::vector<const char *> validationLayers = {"VK_LAYER_KHRONOS_validation"};
   const std::vector<const char *> deviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 };
+
+}

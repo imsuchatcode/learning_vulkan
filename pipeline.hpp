@@ -26,7 +26,7 @@ public:
     ~PipeLine();
 
     PipeLine(const PipeLine&) = delete;
-    void operator = (const PipeLine&) = delete;
+    PipeLine& operator = (const PipeLine&) = delete;
 
     void bind(VkCommandBuffer commandBuffer);
 

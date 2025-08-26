@@ -5,6 +5,8 @@
 #include <string>
 #include <vulkan/vulkan.h>
 
+namespace my{
+
 class Window
 {
 public:
@@ -16,15 +18,21 @@ public:
     
     bool shouldClose(){return glfwWindowShouldClose(window);}
     VkExtent2D getExtend() {return {static_cast<uint32_t>(width), static_cast<uint32_t>(height)};}
+    bool wasWindowResized() {return frameBufferResized; }
+    void resetWindowResizedFlag() {frameBufferResized = false; }
 
     void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
 
 private:
+    static void frameBufferResizeCallback(GLFWwindow *window, int width, int height);
     void initwindow();
 
-    const int width;
-    const int height;
-    std::string windowName;
+    int width;
+    int height;
+    bool frameBufferResized = false;
 
+    std::string windowName;
     GLFWwindow *window;
 };
+
+}

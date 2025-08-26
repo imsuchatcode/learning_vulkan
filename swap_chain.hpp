@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+namespace my{
 class  SwapChain {
  public:
   static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
@@ -17,7 +18,7 @@ class  SwapChain {
   ~ SwapChain();
 
    SwapChain(const  SwapChain &) = delete;
-  void operator=(const  SwapChain &) = delete;
+  SwapChain& operator=(const  SwapChain &) = delete;
 
   VkFramebuffer getFrameBuffer(int index) { return swapChainFramebuffers[index]; }
   VkRenderPass getRenderPass() { return renderPass; }
@@ -75,3 +76,4 @@ class  SwapChain {
   size_t currentFrame = 0;
 };
 
+}

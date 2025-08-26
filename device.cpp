@@ -6,6 +6,8 @@
 #include <set>
 #include <unordered_set>
 
+namespace my{
+
 // local callback functions
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
     VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
@@ -527,4 +529,6 @@ void Device::createImageWithInfo(
   if (vkBindImageMemory(device_, image, imageMemory, 0) != VK_SUCCESS) {
     throw std::runtime_error("failed to bind image memory!");
   }
+}
+
 }
