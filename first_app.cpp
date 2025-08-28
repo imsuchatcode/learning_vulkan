@@ -49,7 +49,9 @@ void FirstApp::createPipelineLayout(){
 }
 
 void FirstApp::createPipeline(){
-    // why use swapchain width and height ?
+    assert(mySwapChain != nullptr && "cannot create pipeline before swapchain");
+    assert(pipelineLayout != nullptr && "cannot create pipeline before pipeline layout");
+
     PipelineConfigInfo pipelineConfig{};
     PipeLine::defaultPipelineConfigInfo(pipelineConfig);
     pipelineConfig.renderPass = mySwapChain->getRenderPass();
@@ -66,7 +68,17 @@ void FirstApp::recreateSwapChain(){
     } 
 
     vkDeviceWaitIdle(device.device());
-    mySwapChain = std::make_unique<SwapChain>(device, extend);
+    if (mySwapChain == nullptr){
+        mySwapChain = std::make_unique<SwapChain>(device, extend);
+    }
+    else {
+        mySwapChain = std::make_unique<SwapChain>(device, extend, std::move(mySwapChain));
+        if (mySwapChain->imageCount() != commandBuffers.size()){
+            freeCommandBuffers();
+            recreateSwapChain();
+        }
+    }
+    // if the render pass are compatible do nothing else to save resort
     createPipeline();
 }
 
@@ -82,6 +94,12 @@ void FirstApp::createCommandBuffers(){
         throw std::runtime_error("unable to create(allocate) command buffer");
     }
 }
+
+void FirstApp::freeCommandBuffers(){
+    vkFreeCommandBuffers(device.device(), device.getCommandPool(), static_cast<uint32_t>(commandBuffers.size()), commandBuffers.data());
+    commandBuffers.clear();
+}
+
 void FirstApp::recordCommandBuffer(int imageIndex){
     VkCommandBufferBeginInfo beginInfo{};
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
