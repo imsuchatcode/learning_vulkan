@@ -10,6 +10,7 @@
 #include <vector>
 
 namespace my{
+
 class FirstApp{
     public:
         static constexpr int WIDTH = 800;
