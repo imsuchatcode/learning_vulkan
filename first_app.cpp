@@ -164,6 +164,7 @@ void FirstApp::recordCommandBuffer(int imageIndex){
     renderGameObjects(commandBuffers[imageIndex]);
 
     vkCmdEndRenderPass(commandBuffers[imageIndex]);
+
     if (vkEndCommandBuffer(commandBuffers[imageIndex]) != VK_SUCCESS)
     {
         throw std::runtime_error("fail to end command buffer");
