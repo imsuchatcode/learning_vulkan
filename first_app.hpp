@@ -4,8 +4,7 @@
 #include "pipeline.hpp"
 #include "my_game_object.hpp"
 #include "device.hpp"
-#include "swap_chain.hpp"
-#include "my_model.hpp"
+#include "my_renderer.hpp"
 
 #include <memory>
 #include <vector>
@@ -29,21 +28,16 @@ class FirstApp{
         void loadGameObjects();
         void createPipelineLayout();
         void createPipeline();
-        void createCommandBuffers();
-        void freeCommandBuffers();
-        void drawFrame();
-        void recreateSwapChain();
-        void recordCommandBuffer(int imageIndex);
         void renderGameObjects(VkCommandBuffer commandBuffer);
 
         Window window{WIDTH, HEIGHT, "cpp is hard"};
         Device device{window};
+        MyRenderer myRenderer{window, device};
         // currently using mailbox not vsync(fifo) will change if run into error
+
         // use pointer to easily delete and recreate for window resize
-        std::unique_ptr<SwapChain> mySwapChain;
         std::unique_ptr<PipeLine> myPipeLine;
         VkPipelineLayout pipelineLayout;
-        std::vector<VkCommandBuffer> commandBuffers;
         std::vector<MyGameObject> gameObjects;
 };
 
