@@ -1,7 +1,6 @@
 #pragma once
 
 #include "window.hpp"
-#include "pipeline.hpp"
 #include "my_game_object.hpp"
 #include "device.hpp"
 #include "my_renderer.hpp"
@@ -26,9 +25,6 @@ class FirstApp{
 
     private:
         void loadGameObjects();
-        void createPipelineLayout();
-        void createPipeline();
-        void renderGameObjects(VkCommandBuffer commandBuffer);
 
         Window window{WIDTH, HEIGHT, "cpp is hard"};
         Device device{window};
@@ -36,8 +32,6 @@ class FirstApp{
         // currently using mailbox not vsync(fifo) will change if run into error
 
         // use pointer to easily delete and recreate for window resize
-        std::unique_ptr<PipeLine> myPipeLine;
-        VkPipelineLayout pipelineLayout;
         std::vector<MyGameObject> gameObjects;
 };
 

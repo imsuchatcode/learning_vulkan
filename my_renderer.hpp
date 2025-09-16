@@ -20,7 +20,6 @@ class MyRenderer{
 
         VkRenderPass getSwapChainRenderPass() const {return mySwapChain->getRenderPass();}
         bool isFrameInProgress() const {return isFrameStarted;}
-
         VkCommandBuffer getCurrentCommandBuffer() const {
             assert(isFrameStarted && "cannot get framebuffer when frame not in progress");
             return commandBuffers[currentImageIndex];
