@@ -22,7 +22,12 @@ class MyRenderer{
         bool isFrameInProgress() const {return isFrameStarted;}
         VkCommandBuffer getCurrentCommandBuffer() const {
             assert(isFrameStarted && "cannot get framebuffer when frame not in progress");
-            return commandBuffers[currentImageIndex];
+            return commandBuffers[currentFrameIndex];
+        }
+
+        int getFrameIndex() const {
+            assert(isFrameStarted && "cannot get frame index when frame not in progress");
+            return currentFrameIndex; 
         }
 
         VkCommandBuffer beginFrame();
@@ -44,6 +49,7 @@ class MyRenderer{
         std::vector<VkCommandBuffer> commandBuffers;
 
         uint32_t currentImageIndex;
+        int currentFrameIndex;
         bool isFrameStarted = false;
 };
 

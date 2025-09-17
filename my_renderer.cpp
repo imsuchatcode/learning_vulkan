@@ -26,17 +26,17 @@ void MyRenderer::recreateSwapChain(){
         mySwapChain = std::make_unique<SwapChain>(myDevice, extend);
     }
     else {
-        mySwapChain = std::make_unique<SwapChain>(myDevice, extend, std::move(mySwapChain));
-        if (mySwapChain->imageCount() != commandBuffers.size()){
-            freeCommandBuffers();
-            recreateSwapChain();
+        std::shared_ptr<SwapChain> oldSwapChain = std::move(mySwapChain);
+        mySwapChain = std::make_unique<SwapChain>(myDevice, extend, oldSwapChain);
+
+        if (!oldSwapChain->compareSwapChain(*mySwapChain.get())){
+            throw std::runtime_error("SwapChain image(depth) format have changed!");
         }
     }
-    // create pipeline here 
 }
 
 void MyRenderer::createCommandBuffers(){
-    commandBuffers.resize(mySwapChain->imageCount());
+    commandBuffers.resize(SwapChain::MAX_FRAMES_IN_FLIGHT);
     VkCommandBufferAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
@@ -99,6 +99,7 @@ void MyRenderer::endFrame(){
         throw std::runtime_error("failed to present swap chain image");
     }
 
+    currentFrameIndex = (currentFrameIndex + 1) % SwapChain::MAX_FRAMES_IN_FLIGHT;
     isFrameStarted = false;
 }
 
