@@ -30,7 +30,7 @@ void MyRenderer::recreateSwapChain(){
         mySwapChain = std::make_unique<SwapChain>(myDevice, extend, oldSwapChain);
 
         if (!oldSwapChain->compareSwapChain(*mySwapChain.get())){
-            throw std::runtime_error("SwapChain image(depth) format have changed!");
+            throw std::runtime_error("SwapChain image(depth) format have changed");
         }
     }
 }
