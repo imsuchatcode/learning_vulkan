@@ -5,6 +5,11 @@
 #include <memory>
 
 namespace my {
+struct RigidBody2dComponent{
+    glm::vec2 velocity;
+    float mass{1.0f};
+};
+
 struct Transform2dComponent {
     glm::vec2 translation{}; // offset
     glm::vec2 scale{1.f, 1.f};
@@ -40,6 +45,7 @@ class MyGameObject{
     std::shared_ptr<MyModel> model{}; 
     glm::vec3 color{};   
     Transform2dComponent transform2d{};
+    RigidBody2dComponent rigidBody2d{};
 
     private:
     MyGameObject(id_t objId) : id{objId} {}
