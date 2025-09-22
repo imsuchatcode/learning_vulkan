@@ -56,7 +56,6 @@ void SimpleRenderSystem::createPipeline(VkRenderPass renderPass){
 
 void SimpleRenderSystem::renderGameObjects(VkCommandBuffer commandBuffer, std::vector<MyGameObject> &gameObjects){
     myPipeLine->bind(commandBuffer);
-
     for (auto &obj : gameObjects){
         obj.transform2d.rotation = glm::mod(obj.transform2d.rotation + 0.0001f, glm::two_pi<float>());
 

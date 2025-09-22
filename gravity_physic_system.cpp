@@ -23,22 +23,22 @@ namespace my
         return force * offset / glm::sqrt(distanceSquared);
     }
 
-    void GravityPhysicSystem::stepSimulation(std::vector<MyGameObject>& gameObjects, float dt){
-        for (auto iterA = gameObjects.begin(); iterA != gameObjects.end(); iterA++){
+    void GravityPhysicSystem::stepSimulation(std::vector<MyGameObject>& physicObjects, float dt){
+        for (auto iterA = physicObjects.begin(); iterA != physicObjects.end(); iterA++){
             auto& objA = *iterA;
-            for(auto iterB = iterA; iterB != gameObjects.end(); iterB++){
+            for(auto iterB = iterA; iterB != physicObjects.end(); iterB++){
                 if (iterA == iterB){
                     continue;
                 }
                 auto& objB = *iterB;
 
                 auto force = computeForce(objA, objB);
-                objA.rigidBody2d.velocity = dt * -force / objA.rigidBody2d.mass;
-                objB.rigidBody2d.velocity = dt * force / objB.rigidBody2d.mass;
+                objA.rigidBody2d.velocity += dt * -force / objA.rigidBody2d.mass;
+                objB.rigidBody2d.velocity += dt * force / objB.rigidBody2d.mass;
 
             }
         }
-        for (auto &obj : gameObjects){
+        for (auto &obj : physicObjects){
             obj.transform2d.translation += dt * obj.rigidBody2d.velocity;
         }
     }

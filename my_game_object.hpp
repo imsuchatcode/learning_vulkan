@@ -21,8 +21,8 @@ struct Transform2dComponent {
         glm::mat2 rotMatix = {{c, s}, {-s, c}};
 
         glm::mat2 scaleMat{{scale.x, .0f}, {.0f, scale.y}};
-        //return rotMatix * scaleMat;
-        return scaleMat * rotMatix;
+        return rotMatix * scaleMat;
+        //return scaleMat * rotMatix;
     }
 };
 
