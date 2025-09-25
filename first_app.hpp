@@ -4,6 +4,7 @@
 #include "my_game_object.hpp"
 #include "device.hpp"
 #include "my_renderer.hpp"
+#include "grid_system.hpp"
 
 #include <memory>
 #include <vector>
@@ -33,6 +34,7 @@ class FirstApp{
 
         // use pointer to easily delete and recreate for window resize
         std::vector<MyGameObject> gameObjects;
+        std::unique_ptr<GridSystem> gridSystem;
 };
 
 }
