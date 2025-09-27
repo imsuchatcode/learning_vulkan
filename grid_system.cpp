@@ -17,13 +17,19 @@ namespace my
             
             for (int j = 0; j < cols; j++){
                 auto obj = MyGameObject::createGameObject();
-                obj.color = glm::vec3(1.f);
+                obj.color = glm::vec3(0.2f, 0.2f, 0.2f);
                 obj.model = squareModel;
 
-                float worldX = (i - rows * 0.5f) * (2.0f / rows);
-                float worldY = (j - cols * 0.5f) * (2.0f / cols);
+                float cellWidth = 2.0f / cols;  
+                float cellHeight = 2.0f / rows;
+                
+                float worldX = -1.0f + (j + 0.5f) * cellWidth;
+                float worldY = -1.0f + (i + 0.5f) * cellHeight;
+                
                 obj.transform2d.translation = {worldX, worldY};
-                obj.transform2d.scale = {0.8f / rows, 0.8f / cols};
+                obj.transform2d.rotation = 0.0f;
+
+                obj.transform2d.scale = {cellWidth * 0.9f, cellHeight * 0.9f};
 
                 curGrid[i].push_back(std::move(obj));
             }

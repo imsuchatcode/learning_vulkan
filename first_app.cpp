@@ -41,10 +41,8 @@ void FirstApp::loadGameObjects(){
     const int PIXEL_PER_CELL = 10;
     gridSystem = std::make_unique<GridSystem>(device, WIDTH, HEIGHT, PIXEL_PER_CELL);
     
-    // Get reference to the grid instead of copying
     std::vector<std::vector<MyGameObject>>& grid = gridSystem->getCurGrid();
     
-    // Move objects from grid to gameObjects vector
     for (int i = 0; i < gridSystem->getRows(); i++){
         for (int j = 0; j < gridSystem->getCols(); j++){
             gameObjects.push_back(std::move(grid[i][j]));
