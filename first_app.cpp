@@ -26,8 +26,9 @@ void FirstApp::run() {
 
         if (auto commandBuffer = myRenderer.beginFrame()){
             myRenderer.beginSwapChainRenderPass(commandBuffer);
-            
-            simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects);
+
+            std::vector<MyGameObject> &gridObject = gridSystem->getGrid();
+            simpleRenderSystem.renderGameObjects(commandBuffer, gridObject);
 
             myRenderer.endSwapChainRenderPass(commandBuffer);
             myRenderer.endFrame();
@@ -41,13 +42,7 @@ void FirstApp::loadGameObjects(){
     const int PIXEL_PER_CELL = 10;
     gridSystem = std::make_unique<GridSystem>(device, WIDTH, HEIGHT, PIXEL_PER_CELL);
     
-    std::vector<std::vector<MyGameObject>>& grid = gridSystem->getCurGrid();
-    
-    for (int i = 0; i < gridSystem->getRows(); i++){
-        for (int j = 0; j < gridSystem->getCols(); j++){
-            gameObjects.push_back(std::move(grid[i][j]));
-        }
-    }
+    gridSystem->makeRanCellAlive();
 
 /*
     std::vector<MyModel::Vertex> vertices = {

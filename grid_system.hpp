@@ -1,9 +1,11 @@
 #pragma once
 
 #include <memory>
+
 #include "my_model.hpp"
 #include "my_game_object.hpp"
 #include "device.hpp"
+#include "grid_cell.hpp"
 
 namespace my
 {
@@ -15,17 +17,26 @@ public:
     std::unique_ptr<MyModel> createSquareModel(Device &myDevice);
 
     // Return reference instead of copy to avoid copying non-copyable MyGameObject
-    std::vector<std::vector<MyGameObject>>& getCurGrid() {return curGrid;}
+    std::vector<MyGameObject> & getGrid() {return gameObjects;}
 
     int getRows() {return rows;}
     int getCols() {return cols;}
+
+    void makeRanCellAlive();
 
 private:
     int rows;
     int cols; 
 
-    std::vector<std::vector<MyGameObject>> curGrid;
-    std::vector<std::vector<MyGameObject>> nextGrid;
+    int cellToGameObjects(int row, int col) const {return row * cols + col;}
+    int countAliveNeighbor(int row, int col);
+    bool checkInBound(int row, int col);
+    void updateGameObjectsColor();
+
+    std::vector<std::vector<std::unique_ptr<GridCell>>> curGrid;
+    std::vector<std::vector<std::unique_ptr<GridCell>>> nextGrid;
+
+    std::vector<MyGameObject> gameObjects;
 };
 
 }
