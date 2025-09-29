@@ -16,13 +16,10 @@ public:
 
     std::unique_ptr<MyModel> createSquareModel(Device &myDevice);
 
-    // Return reference instead of copy to avoid copying non-copyable MyGameObject
     std::vector<MyGameObject> & getGrid() {return gameObjects;}
 
-    int getRows() {return rows;}
-    int getCols() {return cols;}
-
     void makeRanCellAlive();
+    void updateGrid(); 
 
 private:
     int rows;

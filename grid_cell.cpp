@@ -1,6 +1,23 @@
 #include "grid_cell.hpp"
 namespace my{
-    //void GridCell::update(int updateNeighbor){}
+    void GridCell::updateConwayRule(int aliveNeighbor){
+        if (alive){
+            if (aliveNeighbor == 3 || aliveNeighbor == 2){
+                alive = true;
+            }
+            else{
+                alive = false;
+            }
+        }
+        else {
+            if (aliveNeighbor == 3){
+                alive = true;
+            }
+            else{
+                alive = false;
+            }
+        }
+    }
 
     void GridCell::setColor(){
         if (alive){

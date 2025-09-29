@@ -43,6 +43,28 @@ namespace my
         return std::make_unique<MyModel>(myDevice, vertices);
     }
 
+    void GridSystem::updateGrid(){
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < cols; j++){
+                int neighbors = countAliveNeighbor(i, j);
+
+                nextGrid[i][j] = std::make_unique<GridCell>();
+
+                if (curGrid[i][j]->isAlive()){
+                    nextGrid[i][j]->setAlive();
+                }
+                else {
+                    nextGrid[i][j]->setDead();
+                }
+
+                nextGrid[i][j]->updateConwayRule(neighbors);
+                nextGrid[i][j]->setColor();
+            }
+        }
+        curGrid.swap(nextGrid);
+        updateGameObjectsColor();
+    }
+    
     void GridSystem::makeRanCellAlive(){
         std::random_device rd;
         std::mt19937 gen(rd());

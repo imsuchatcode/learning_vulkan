@@ -20,9 +20,24 @@ FirstApp::~FirstApp() {}
 
 void FirstApp::run() {
     SimpleRenderSystem simpleRenderSystem{device, myRenderer.getSwapChainRenderPass()};
-    
+
+    float timeSinceLastUpdate = 0.0f;
+    float updateInterval = 0.2f;
+    float lastTime = static_cast<float>(glfwGetTime());
+
     while (!window.shouldClose()){
         glfwPollEvents();
+        
+        float currentTime = static_cast<float>(glfwGetTime());
+        float dt = currentTime - lastTime;
+        lastTime = currentTime;
+
+        timeSinceLastUpdate += dt;
+        
+        if (timeSinceLastUpdate >= updateInterval) {
+            gridSystem->updateGrid();
+            timeSinceLastUpdate = 0.0f;
+        }
 
         if (auto commandBuffer = myRenderer.beginFrame()){
             myRenderer.beginSwapChainRenderPass(commandBuffer);

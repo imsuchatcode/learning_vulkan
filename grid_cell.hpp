@@ -12,9 +12,10 @@ private:
 public:
     bool isAlive() { return alive; }
 
-    void setAlive() { alive = !alive; }
+    void setAlive() { alive = true; }
+    void setDead() {alive = false;}
 
-    //void update(int updateNeighbor);
+    void updateConwayRule(int aliveNeighbor);
 
     glm::vec3 getColor() { return color; }
 
