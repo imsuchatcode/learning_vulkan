@@ -2,22 +2,20 @@
 
 #include "my_model.hpp"
 
+#include <glm/gtc/matrix_transform.hpp>
 #include <memory>
 
 namespace my {
-struct Transform2dComponent {
-    glm::vec2 translation{}; // offset
-    glm::vec2 scale{1.f, 1.f};
-    float rotation;
+struct TransformComponent {
+    glm::vec3 translation{}; // offset
+    glm::vec3 scale{1.f, 1.f, 1.f};
+    glm::vec3 rotation{};
 
-    glm::mat2 mat2() {
-        const float s = glm::sin(rotation);
-        const float c = glm::cos(rotation);
-        glm::mat2 rotMatix = {{c, s}, {-s, c}};
+    glm::mat4 mat4(){
 
-        glm::mat2 scaleMat{{scale.x, .0f}, {.0f, scale.y}};
-        //return rotMatix * scaleMat;
-        return scaleMat * rotMatix;
+        auto transform = glm::translate(glm::mat4{1.f}, translation);
+        transform = glm::scale(transform, scale);
+        return transform;
     }
 };
 
@@ -39,7 +37,7 @@ class MyGameObject{
 
     std::shared_ptr<MyModel> model{}; 
     glm::vec3 color{};   
-    Transform2dComponent transform2d{};
+    TransformComponent transform2d{};
 
     private:
     MyGameObject(id_t objId) : id{objId} {}
