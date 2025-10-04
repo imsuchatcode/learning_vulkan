@@ -49,7 +49,8 @@ namespace my{
         //location is the location use in the vertex shader
         //
         attributeDescription[0].binding = 0;
-        attributeDescription[0].format = VK_FORMAT_R32G32_SFLOAT;
+        // renember to change if change position to coreresponeding vector
+        attributeDescription[0].format = VK_FORMAT_R32G32B32_SFLOAT;
         attributeDescription[0].location = 0;
         attributeDescription[0].offset = offsetof(Vertex, position);
 

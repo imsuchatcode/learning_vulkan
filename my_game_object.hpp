@@ -14,6 +14,11 @@ struct TransformComponent {
     glm::mat4 mat4(){
 
         auto transform = glm::translate(glm::mat4{1.f}, translation);
+
+        transform = glm::rotate(transform, rotation.y, {0.0f , 1.0f, 0.0f});
+        transform = glm::rotate(transform, rotation.x, {1.0f , 0.0f, 0.0f});
+        transform = glm::rotate(transform, rotation.z, {0.0f , 0.0f, 1.0f});
+
         transform = glm::scale(transform, scale);
         return transform;
     }
@@ -37,7 +42,7 @@ class MyGameObject{
 
     std::shared_ptr<MyModel> model{}; 
     glm::vec3 color{};   
-    TransformComponent transform2d{};
+    TransformComponent transform{};
 
     private:
     MyGameObject(id_t objId) : id{objId} {}
