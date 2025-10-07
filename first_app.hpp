@@ -4,6 +4,7 @@
 #include "my_game_object.hpp"
 #include "device.hpp"
 #include "my_renderer.hpp"
+#include "my_camera.hpp"
 
 #include <memory>
 #include <vector>

@@ -20,13 +20,15 @@ FirstApp::~FirstApp() {}
 
 void FirstApp::run() {
     SimpleRenderSystem simpleRenderSystem{device, myRenderer.getSwapChainRenderPass()};
+    MyCamera camera{};
+    camera.setOrthographicProjection(-1, 1, -1, 1, -1, 1);
     
     while (!window.shouldClose()){
         glfwPollEvents();
 
         if (auto commandBuffer = myRenderer.beginFrame()){
             myRenderer.beginSwapChainRenderPass(commandBuffer);
-            simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects);
+            simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects, camera);
 
             myRenderer.endSwapChainRenderPass(commandBuffer);
             myRenderer.endFrame();
