@@ -21,10 +21,12 @@ FirstApp::~FirstApp() {}
 void FirstApp::run() {
     SimpleRenderSystem simpleRenderSystem{device, myRenderer.getSwapChainRenderPass()};
     MyCamera camera{};
-    camera.setOrthographicProjection(-1, 1, -1, 1, -1, 1);
     
     while (!window.shouldClose()){
         glfwPollEvents();
+
+        float aspect = myRenderer.getAspectRatio();
+        camera.setOrthographicProjection(-aspect, aspect, -1, 1, -1, 1);
 
         if (auto commandBuffer = myRenderer.beginFrame()){
             myRenderer.beginSwapChainRenderPass(commandBuffer);

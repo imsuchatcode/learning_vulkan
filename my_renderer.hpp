@@ -19,6 +19,8 @@ class MyRenderer{
         MyRenderer& operator=(const MyRenderer &) = delete;
 
         VkRenderPass getSwapChainRenderPass() const {return mySwapChain->getRenderPass();}
+        float getAspectRatio() {return mySwapChain->extentAspectRatio();}
+
         bool isFrameInProgress() const {return isFrameStarted;}
         VkCommandBuffer getCurrentCommandBuffer() const {
             assert(isFrameStarted && "cannot get framebuffer when frame not in progress");
