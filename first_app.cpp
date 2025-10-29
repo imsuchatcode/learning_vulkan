@@ -21,12 +21,16 @@ FirstApp::~FirstApp() {}
 void FirstApp::run() {
     SimpleRenderSystem simpleRenderSystem{device, myRenderer.getSwapChainRenderPass()};
     MyCamera camera{};
-    
+
+    // camera.setViewDirection(glm::vec3(0.f), glm::vec3(0.7f, 0.f, 1.f));
+    camera.setViewTarget(glm::vec3(-1.f, -2.f, 2.f), glm::vec3(0.f, 0.f, 2.5f));
+           
     while (!window.shouldClose()){
         glfwPollEvents();
 
         float aspect = myRenderer.getAspectRatio();
-        camera.setOrthographicProjection(-aspect, aspect, -1, 1, -1, 1);
+        //camera.setOrthographicProjection(-aspect, aspect, -1, 1, -1, 1);
+        camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 100.f);
 
         if (auto commandBuffer = myRenderer.beginFrame()){
             myRenderer.beginSwapChainRenderPass(commandBuffer);
@@ -107,7 +111,7 @@ void FirstApp::loadGameObjects(){
     auto cube = MyGameObject::createGameObject();
 
     cube.model = cubeModel;
-    cube.transform.translation = {0.0f, 0.0f, 0.5f};
+    cube.transform.translation = {0.0f, 0.0f, 2.5f};
     cube.transform.scale = {0.5f, 0.5f, 0.5f};
     gameObjects.push_back(std::move(cube));
 }
