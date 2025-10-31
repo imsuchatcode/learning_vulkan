@@ -2,6 +2,7 @@
 #include "first_app.hpp"
 #include "simple_render_system.hpp"
 
+#include <chrono>
 #include <stdexcept>
 #include <array>
 #include <memory>
@@ -24,9 +25,15 @@ void FirstApp::run() {
 
     // camera.setViewDirection(glm::vec3(0.f), glm::vec3(0.7f, 0.f, 1.f));
     camera.setViewTarget(glm::vec3(-1.f, -2.f, 2.f), glm::vec3(0.f, 0.f, 2.5f));
+
+    auto currentTime = std::chrono::high_resolution_clock::now();
            
     while (!window.shouldClose()){
         glfwPollEvents();
+
+        auto newTime = std::chrono::high_resolution_clock::now();
+        auto timeFrame = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
+        currentTime = newTime;
 
         float aspect = myRenderer.getAspectRatio();
         //camera.setOrthographicProjection(-aspect, aspect, -1, 1, -1, 1);
