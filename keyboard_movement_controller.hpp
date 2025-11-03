@@ -19,7 +19,11 @@ class KeyboardMovementController{
             int lookUp = GLFW_KEY_UP;
             int lookDown = GLFW_KEY_DOWN;
         };
-    private:
 
+        void moveInPlaneXZ(GLFWwindow* window, float dt, MyGameObject& gameObject);
+
+        KeyMappings keys{};
+        float movementSpeed{3.0f};
+        float rotationSpeed{1.5f};
 };
 }
