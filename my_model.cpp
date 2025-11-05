@@ -4,12 +4,19 @@
 #include <cstring>
 
 namespace my{
-    MyModel::MyModel(Device &device, const std::vector<Vertex> &vertices) : myDevice{device} {
-        createVertexBuffers(vertices);
+    MyModel::MyModel(Device &device, const MyModel::Builder &builder) : myDevice{device} {
+        createVertexBuffers(builder.vertices);
+        createIndexBuffers(builder.indicies);
     }
+
     MyModel::~MyModel(){
         vkDestroyBuffer(myDevice.device(), vertexBuffer, nullptr);
         vkFreeMemory(myDevice.device(), vertexBufferMemory, nullptr);
+
+        if (haveIndexBuffer){
+            vkDestroyBuffer(myDevice.device(), indexBuffer, nullptr);
+            vkFreeMemory(myDevice.device(), indexBufferMemory, nullptr);
+        }
     }
 
     void MyModel::createVertexBuffers(const std::vector<Vertex> &vertices){
@@ -24,9 +31,30 @@ namespace my{
         vkUnmapMemory(myDevice.device(), vertexBufferMemory);
     }
 
-    void MyModel::draw(VkCommandBuffer commandBuffer){
-        vkCmdDraw(commandBuffer, vertexCount, 1, 0, 0); 
+    void MyModel::createIndexBuffers(const std::vector<uint32_t> &indicies){
+        indexCount = static_cast<uint32_t>(indicies.size());
+        haveIndexBuffer = indexCount > 0;
+        
+        if (!haveIndexBuffer){
+            return;
+        }
 
+        VkDeviceSize bufferSize = sizeof(indicies[0]) * indexCount;
+        myDevice.createBuffer(bufferSize, VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, indexBuffer, indexBufferMemory);
+
+        void *data;
+        vkMapMemory(myDevice.device(), indexBufferMemory, 0, bufferSize, 0, &data);
+        memcpy(data, indicies.data(), static_cast<size_t>(bufferSize));
+        vkUnmapMemory(myDevice.device(), indexBufferMemory);
+    }
+
+    void MyModel::draw(VkCommandBuffer commandBuffer){
+        if (haveIndexBuffer){
+            vkCmdDrawIndexed(commandBuffer, indexCount, 1, 0, 0, 0);
+        }
+        else{
+            vkCmdDraw(commandBuffer, vertexCount, 1, 0, 0);
+        }
     }
 
     void MyModel::bind(VkCommandBuffer commandBuffer){
@@ -34,6 +62,10 @@ namespace my{
         VkDeviceSize offsets[] = {0};
         
         vkCmdBindVertexBuffers(commandBuffer, 0, 1, buffers, offsets);
+
+        if (haveIndexBuffer){
+            vkCmdBindIndexBuffer(commandBuffer, indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+        }
     }
 
     std::vector<VkVertexInputBindingDescription> MyModel::Vertex::getBindingDescriptions(){

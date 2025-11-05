@@ -61,7 +61,8 @@ void FirstApp::run() {
 
 // temporary helper function, creates a 1x1x1 cube centered at offset
 std::unique_ptr<MyModel> createCubeModel(Device& device, glm::vec3 offset) {
-    std::vector<MyModel::Vertex> vertices{
+    MyModel::Builder model{};
+    model.vertices = {
 
         // left face (white)
         {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
@@ -113,11 +114,10 @@ std::unique_ptr<MyModel> createCubeModel(Device& device, glm::vec3 offset) {
 
     };
 
-    for (auto &v : vertices)
-    {
+    for (auto &v : model.vertices){
         v.position += offset;
     }
-  return std::make_unique<MyModel>(device, vertices);
+  return std::make_unique<MyModel>(device, model);
 }
 
 

@@ -36,6 +36,7 @@ class MyModel{
         void bind(VkCommandBuffer commandBuffer);
         void draw(VkCommandBuffer commandBuffer);
     private:
+
         void createVertexBuffers(const std::vector<Vertex> &vertices);
         void createIndexBuffers(const std::vector<uint32_t> &indicies);
 
@@ -45,7 +46,7 @@ class MyModel{
         VkDeviceMemory vertexBufferMemory;
         uint32_t vertexCount;
 
-        bool haveIndexBuffer = false;
+        bool haveIndexBuffer;
         VkBuffer indexBuffer;
         VkDeviceMemory indexBufferMemory;
         uint32_t indexCount;
