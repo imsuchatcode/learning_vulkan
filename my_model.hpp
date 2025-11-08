@@ -6,6 +6,7 @@
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
 
+#include <memory>
 #include <vector>
 
 namespace my{
@@ -16,6 +17,8 @@ class MyModel{
         struct Vertex{
             glm::vec3 position;
             glm::vec3 color;
+            glm::vec3 normal{};
+            glm::vec2 uv{};
 
             static std::vector<VkVertexInputBindingDescription> getBindingDescriptions();
             static std::vector<VkVertexInputAttributeDescription> getAttributeDescriptions();
@@ -24,6 +27,8 @@ class MyModel{
         struct Builder{
             std::vector<Vertex> vertices{};
             std::vector<uint32_t> indicies{};
+
+            void loadModel(const std::string &filepath);
         };
         
         MyModel(Device &device, const MyModel::Builder &builder);
@@ -32,6 +37,8 @@ class MyModel{
         // must delete copy because it MyModel mangage buffer and memory object
         MyModel(const MyModel &) = delete;
         MyModel &operator=(const MyModel &) = delete;
+
+        static std::unique_ptr<MyModel> createModelFromFile(Device &device, const std::string filepath);
 
         void bind(VkCommandBuffer commandBuffer);
         void draw(VkCommandBuffer commandBuffer);
