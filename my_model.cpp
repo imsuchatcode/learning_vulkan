@@ -3,6 +3,9 @@
 #include <cassert>
 #include <cstring>
 
+#define TINYOBJLOADER_IMPLEMENTATION
+#include <tiny_obj_loader.h>
+
 namespace my{
     MyModel::MyModel(Device &device, const MyModel::Builder &builder) : myDevice{device} {
         createVertexBuffers(builder.vertices);
