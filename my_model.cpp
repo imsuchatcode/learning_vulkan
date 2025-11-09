@@ -1,12 +1,27 @@
 #include "my_model.hpp"
+#include "my_utils.hpp"
 
 #include <cassert>
 #include <cstring>
 #include <iostream>
+#include <unordered_map>
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
+#define GLM_ENABLE_EXPERIMENTAL 
+#include <glm/gtx/hash.hpp>
+
+namespace std{
+    template <>
+    struct hash<my::MyModel::Vertex>{
+        size_t operator()(my::MyModel::Vertex const &vertex) const{
+            size_t seed = 0;
+            my::hashCombine(seed, vertex.position, vertex.color, vertex.normal, vertex.uv);
+            return seed;
+        }
+    };
+}
 namespace my{
     MyModel::MyModel(Device &device, const MyModel::Builder &builder) : myDevice{device} {
         createVertexBuffers(builder.vertices);
@@ -139,6 +154,7 @@ namespace my{
         vertices.clear();
         indicies.clear();
 
+        std::unordered_map<Vertex, uint32_t> uniqueVerticies{}; 
         for (const auto &shape : shapes){
             for (const auto &index : shape.mesh.indices){
                 Vertex vertex{};
@@ -175,7 +191,11 @@ namespace my{
                     };
                 }
 
-                vertices.push_back(vertex);
+                if (uniqueVerticies.count(vertex) == 0){
+                    uniqueVerticies[vertex] = static_cast<uint32_t>(vertices.size());
+                    vertices.push_back(vertex);
+                }
+                indicies.push_back(uniqueVerticies[vertex]);
             }
         }
     }

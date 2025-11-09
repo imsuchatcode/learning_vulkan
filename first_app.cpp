@@ -61,13 +61,13 @@ void FirstApp::run() {
 
 
 void FirstApp::loadGameObjects(){
-    std::shared_ptr<MyModel> cubeModel = MyModel::createModelFromFile(device, "models/colored_cube1.obj");    
-    auto cube = MyGameObject::createGameObject();
+    std::shared_ptr<MyModel> gameModel = MyModel::createModelFromFile(device, "models/smooth_vase.obj");    
+    auto gameObj = MyGameObject::createGameObject();
 
-    cube.model = cubeModel;
-    cube.transform.translation = {0.0f, 0.0f, 2.5f};
-    cube.transform.scale = {0.5f, 0.5f, 0.5f};
-    gameObjects.push_back(std::move(cube));
+    gameObj.model = gameModel;
+    gameObj.transform.translation = {0.0f, 0.0f, 2.5f};
+    gameObj.transform.scale = glm::vec3(3.f);
+    gameObjects.push_back(std::move(gameObj));
 }
 
 }
