@@ -124,20 +124,16 @@ namespace my{
         return bindingDescription;
     }
     std::vector<VkVertexInputAttributeDescription> MyModel::Vertex::getAttributeDescriptions(){
-        std::vector<VkVertexInputAttributeDescription> attributeDescription(2);
+        std::vector<VkVertexInputAttributeDescription> attributeDescription{};
+
         //binding is like a number of vector<Vertex>
         //location is the location use in the vertex shader
-        //
-        attributeDescription[0].binding = 0;
-        // renember to change if change position to coreresponeding vector
-        attributeDescription[0].format = VK_FORMAT_R32G32B32_SFLOAT;
-        attributeDescription[0].location = 0;
-        attributeDescription[0].offset = offsetof(Vertex, position);
 
-        attributeDescription[1].binding = 0;
-        attributeDescription[1].format = VK_FORMAT_R32G32B32_SFLOAT;
-        attributeDescription[1].location = 1;
-        attributeDescription[1].offset = offsetof(Vertex, color);
+        attributeDescription.push_back({0, 0, VK_FORMAT_R32G32B32_SFLOAT, offsetof(Vertex, position)});
+        attributeDescription.push_back({1, 0, VK_FORMAT_R32G32B32_SFLOAT, offsetof(Vertex, color)});
+        attributeDescription.push_back({2, 0, VK_FORMAT_R32G32B32_SFLOAT, offsetof(Vertex, normal)});
+        attributeDescription.push_back({3, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(Vertex, uv)});
+
         return attributeDescription;
     }
 
