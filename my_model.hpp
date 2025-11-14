@@ -1,6 +1,7 @@
 #pragma once
 
 #include "device.hpp"
+#include "my_buffer.hpp"
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -53,13 +54,11 @@ class MyModel{
 
         Device& myDevice;
 
-        VkBuffer vertexBuffer;
-        VkDeviceMemory vertexBufferMemory;
+        std::unique_ptr<MyBuffer> vertexBuffer;
         uint32_t vertexCount;
 
         bool haveIndexBuffer;
-        VkBuffer indexBuffer;
-        VkDeviceMemory indexBufferMemory;
+        std::unique_ptr<MyBuffer> indexBuffer;
         uint32_t indexCount;
 };
 
