@@ -48,7 +48,7 @@ namespace my{
         statgingBuffer.map();
         statgingBuffer.writeToBuffer((void *)vertices.data());
 
-        vertexBuffer = std::make_unique<MyBuffer>(myDevice, vertexSize, vertexCount, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+        vertexBuffer = std::make_unique<MyBuffer>(myDevice, vertexSize, vertexCount, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT , VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
         myDevice.copyBuffer(statgingBuffer.getBuffer(), vertexBuffer->getBuffer(), bufferSize);
     }
@@ -61,7 +61,7 @@ namespace my{
             return;
         }
 
-        VkDeviceSize bufferSize = sizeof(indicies[0] * indexCount);
+        VkDeviceSize bufferSize = sizeof(indicies[0]) * indexCount;
         uint32_t indexSize = sizeof(indicies[0]);
 
         MyBuffer statgingBuffer{myDevice, indexSize, indexCount, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT};
