@@ -2,6 +2,7 @@
 #include "first_app.hpp"
 #include "simple_render_system.hpp"
 #include "keyboard_movement_controller.hpp"
+#include "my_buffer.hpp"
 
 #include <chrono>
 #include <stdexcept>
@@ -14,13 +15,26 @@
 #include <glm/gtc/constants.hpp>
 namespace my{
 
-FirstApp::FirstApp(){
-    loadGameObjects();
-}
+struct GlobalUbo{
+    glm::mat4 projectionView{1.f};
+    glm::vec3 lightDirection = glm::normalize(glm::vec3(1.0, -3.0, -1.0));
+};
+
+FirstApp::FirstApp(){ loadGameObjects(); }
 
 FirstApp::~FirstApp() {}
 
 void FirstApp::run() {
+    MyBuffer globalUboBuffer{
+        device,
+        sizeof(GlobalUbo), 
+        SwapChain::MAX_FRAMES_IN_FLIGHT,
+        VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
+        device.properties.limits.minUniformBufferOffsetAlignment
+    };
+    globalUboBuffer.map();
+
     SimpleRenderSystem simpleRenderSystem{device, myRenderer.getSwapChainRenderPass()};
     MyCamera camera{};
 
@@ -49,6 +63,14 @@ void FirstApp::run() {
         camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 100.f);
 
         if (auto commandBuffer = myRenderer.beginFrame()){
+            int frameIndex = myRenderer.getFrameIndex();
+            // line below to update 
+            GlobalUbo ubo{};
+            ubo.projectionView = camera.getProjectionMatrix() * camera.getView();
+            globalUboBuffer.writeToIndex(&ubo, frameIndex);
+            globalUboBuffer.flushIndex(frameIndex);
+
+            // line below to render 
             myRenderer.beginSwapChainRenderPass(commandBuffer);
             simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects, camera);
 
