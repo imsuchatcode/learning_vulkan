@@ -1,0 +1,18 @@
+// add frame relevant data into a single object
+#pragma once
+
+#include "my_camera.hpp"
+
+#include <vulkan/vulkan.h>
+
+namespace my{
+
+struct FrameInfo{
+    int frameIndex;
+    float frameTime;
+    VkCommandBuffer commandBuffer;
+    MyCamera &camera;
+};
+
+
+}

@@ -53,23 +53,22 @@ void SimpleRenderSystem::createPipeline(VkRenderPass renderPass){
     myPipeLine = std::make_unique<PipeLine>(myDevice, "shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv", pipelineConfig);
 }
 
-void SimpleRenderSystem::renderGameObjects(VkCommandBuffer commandBuffer, std::vector<MyGameObject> &gameObjects, const MyCamera& camera){
-    myPipeLine->bind(commandBuffer);
+void SimpleRenderSystem::renderGameObjects(FrameInfo &frameInfo, std::vector<MyGameObject> &gameObjects){
+    myPipeLine->bind(frameInfo.commandBuffer);
 
-    auto projectionView = camera.getProjectionMatrix() * camera.getView();
+    auto projectionView = frameInfo.camera.getProjectionMatrix() * frameInfo.camera.getView();
 
     for (auto &obj : gameObjects){
-        //obj.transform.rotation.y = glm::mod(obj.transform.rotation.y + 0.0001f, glm::two_pi<float>());
-        //obj.transform.rotation.x = glm::mod(obj.transform.rotation.x + 0.00005f, glm::two_pi<float>());
         SimplePushConstantData push{};
+
         auto modelMatrix = obj.transform.mat4();
         push.transform = projectionView * modelMatrix;
         push.normalMatrix = obj.transform.normalMatrix();
 
-        vkCmdPushConstants(commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(SimplePushConstantData), &push);
+        vkCmdPushConstants(frameInfo.commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(SimplePushConstantData), &push);
 
-        obj.model->bind(commandBuffer);
-        obj.model->draw(commandBuffer);
+        obj.model->bind(frameInfo.commandBuffer);
+        obj.model->draw(frameInfo.commandBuffer);
     }
 }
 }

@@ -4,6 +4,7 @@
 #include "my_game_object.hpp"
 #include "device.hpp"
 #include "my_camera.hpp"
+#include "my_frame_info.hpp"
 
 #include <memory>
 #include <vector>
@@ -18,7 +19,7 @@ public:
         SimpleRenderSystem(const SimpleRenderSystem &) = delete;
         SimpleRenderSystem& operator=(const SimpleRenderSystem &) = delete;
 
-        void renderGameObjects(VkCommandBuffer commandBuffer, std::vector<MyGameObject> &gameObjects, const MyCamera& camera);
+        void renderGameObjects(FrameInfo &frameInfo, std::vector<MyGameObject> &gameObjects);
     private:
         void createPipelineLayout();
         void createPipeline(VkRenderPass renderPass);

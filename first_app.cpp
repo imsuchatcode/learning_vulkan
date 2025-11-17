@@ -25,15 +25,15 @@ FirstApp::FirstApp(){ loadGameObjects(); }
 FirstApp::~FirstApp() {}
 
 void FirstApp::run() {
-    MyBuffer globalUboBuffer{
-        device,
+    std::vector<std::unique_ptr<MyBuffer>> uboBuffers(SwapChain::MAX_FRAMES_IN_FLIGHT);
+    for (int i = 0; i < uboBuffers.size(); i++){
+        uboBuffers[i] = std::make_unique<MyBuffer>(device,
         sizeof(GlobalUbo), 
-        SwapChain::MAX_FRAMES_IN_FLIGHT,
+        1,
         VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-        device.properties.limits.minUniformBufferOffsetAlignment
-    };
-    globalUboBuffer.map();
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+        uboBuffers[i]->map();
+    }
 
     SimpleRenderSystem simpleRenderSystem{device, myRenderer.getSwapChainRenderPass()};
     MyCamera camera{};
@@ -64,15 +64,17 @@ void FirstApp::run() {
 
         if (auto commandBuffer = myRenderer.beginFrame()){
             int frameIndex = myRenderer.getFrameIndex();
+            FrameInfo frameInfo{frameIndex, frameTime, commandBuffer, camera};
+
             // line below to update 
             GlobalUbo ubo{};
             ubo.projectionView = camera.getProjectionMatrix() * camera.getView();
-            globalUboBuffer.writeToIndex(&ubo, frameIndex);
-            globalUboBuffer.flushIndex(frameIndex);
+            uboBuffers[frameIndex]->writeToBuffer(&ubo);
+            uboBuffers[frameIndex]->flush();
 
             // line below to render 
             myRenderer.beginSwapChainRenderPass(commandBuffer);
-            simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects, camera);
+            simpleRenderSystem.renderGameObjects(frameInfo, gameObjects);
 
             myRenderer.endSwapChainRenderPass(commandBuffer);
             myRenderer.endFrame();
