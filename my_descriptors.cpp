@@ -25,7 +25,7 @@ MyDescriptorSetLayout::Builder &MyDescriptorSetLayout::Builder::addBinding(
 }
 
 std::unique_ptr<MyDescriptorSetLayout> MyDescriptorSetLayout::Builder::build() const {
-  return std::make_unique<MyDescriptorSetLayout>(myDevice, bindings);
+    return std::make_unique<MyDescriptorSetLayout>(myDevice, bindings);
 }
  
 // *************** Descriptor Set Layout *********************
@@ -123,7 +123,7 @@ void MyDescriptorPool::freeDescriptors(std::vector<VkDescriptorSet> &descriptors
 }
  
 void MyDescriptorPool::resetPool() {
-  vkResetDescriptorPool(myDevice.device(), descriptorPool, 0);
+    vkResetDescriptorPool(myDevice.device(), descriptorPool, 0);
 }
  
 // *************** Descriptor Writer *********************
@@ -174,19 +174,19 @@ MyDescriptorWriter &MyDescriptorWriter::writeImage(
 }
  
 bool MyDescriptorWriter::build(VkDescriptorSet &set) {
-  bool success = pool.allocateDescriptor(setLayout.getDescriptorSetLayout(), set);
-  if (!success) {
-    return false;
-  }
-  overwrite(set);
-  return true;
+    bool success = pool.allocateDescriptor(setLayout.getDescriptorSetLayout(), set);
+    if (!success){
+        return false;
+    }
+    overwrite(set);
+    return true;
 }
  
-void LveDescriptorWriter::overwrite(VkDescriptorSet &set) {
-  for (auto &write : writes) {
-    write.dstSet = set;
-  }
-  vkUpdateDescriptorSets(pool.lveDevice.device(), writes.size(), writes.data(), 0, nullptr);
+void MyDescriptorWriter::overwrite(VkDescriptorSet &set) {
+    for (auto &write : writes){
+        write.dstSet = set;
+    }
+    vkUpdateDescriptorSets(pool.myDevice.device(), writes.size(), writes.data(), 0, nullptr);
 }
  
 } 
