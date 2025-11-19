@@ -20,7 +20,14 @@ struct GlobalUbo{
     glm::vec3 lightDirection = glm::normalize(glm::vec3(1.0, -3.0, -1.0));
 };
 
-FirstApp::FirstApp(){ loadGameObjects(); }
+FirstApp::FirstApp(){
+    globalPool = MyDescriptorPool::Builder(device)
+    .setMaxSets(SwapChain::MAX_FRAMES_IN_FLIGHT)
+    .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, SwapChain::MAX_FRAMES_IN_FLIGHT)
+    .build();
+
+    loadGameObjects();
+}
 
 FirstApp::~FirstApp() {}
 
@@ -33,6 +40,14 @@ void FirstApp::run() {
         VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
         uboBuffers[i]->map();
+    }
+
+    auto globalSetLayout = MyDescriptorSetLayout::Builder(device).addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT).build();
+    
+    std::vector<VkDescriptorSet> globalDescriptorSet(SwapChain::MAX_FRAMES_IN_FLIGHT);
+    for (int i = 0; i < globalDescriptorSet.size(); i++){
+        auto bufferInfo = uboBuffers[i]->descriptorInfo();
+        MyDescriptorWriter(*globalSetLayout, *globalPool).writeBuffer(0, &bufferInfo).build(globalDescriptorSet[i]);
     }
 
     SimpleRenderSystem simpleRenderSystem{device, myRenderer.getSwapChainRenderPass()};

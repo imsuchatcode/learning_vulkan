@@ -5,6 +5,7 @@
 #include "device.hpp"
 #include "my_renderer.hpp"
 #include "my_camera.hpp"
+#include "my_descriptors.hpp"
 
 #include <memory>
 #include <vector>
@@ -32,7 +33,7 @@ class FirstApp{
         MyRenderer myRenderer{window, device};
         // currently using mailbox not vsync(fifo) will change if run into error
 
-        // use pointer to easily delete and recreate for window resize
+        std::unique_ptr<MyDescriptorPool>globalPool;
         std::vector<MyGameObject> gameObjects;
 };
 

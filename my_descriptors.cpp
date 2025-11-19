@@ -33,8 +33,8 @@ std::unique_ptr<MyDescriptorSetLayout> MyDescriptorSetLayout::Builder::build() c
 MyDescriptorSetLayout::MyDescriptorSetLayout(
     Device &myDevice, std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding> bindings)
     : myDevice{myDevice}, bindings{bindings}{
-    std::vector<VkDescriptorSetLayoutBinding> setLayoutBindings{};
 
+    std::vector<VkDescriptorSetLayoutBinding> setLayoutBindings{};
     for (auto kv : bindings) {
         setLayoutBindings.push_back(kv.second);
     }

@@ -22,20 +22,20 @@ public:
         std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding> bindings{};
     };
 
-MyDescriptorSetLayout(Device &myDevice, std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding> bindings);
-~MyDescriptorSetLayout();
+    MyDescriptorSetLayout(Device &myDevice, std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding> bindings);
+    ~MyDescriptorSetLayout();
 
-MyDescriptorSetLayout(const MyDescriptorSetLayout &) = delete;
-MyDescriptorSetLayout &operator=(const MyDescriptorSetLayout &) = delete;
+    MyDescriptorSetLayout(const MyDescriptorSetLayout &) = delete;
+    MyDescriptorSetLayout &operator=(const MyDescriptorSetLayout &) = delete;
 
-VkDescriptorSetLayout getDescriptorSetLayout() const {return descriptorSetLayout; }
+    VkDescriptorSetLayout getDescriptorSetLayout() const { return descriptorSetLayout; }
+
 private:
+    Device &myDevice;
+    VkDescriptorSetLayout descriptorSetLayout;
+    std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding> bindings;
 
-Device &myDevice;
-VkDescriptorSetLayout  descriptorSetLayout;
-std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding> bindings;
-
-friend class MyDescriptorWriter;
+    friend class MyDescriptorWriter;
 };
 
 class MyDescriptorPool {
