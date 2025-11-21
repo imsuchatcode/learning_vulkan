@@ -50,7 +50,7 @@ void FirstApp::run() {
         MyDescriptorWriter(*globalSetLayout, *globalPool).writeBuffer(0, &bufferInfo).build(globalDescriptorSet[i]);
     }
 
-    SimpleRenderSystem simpleRenderSystem{device, myRenderer.getSwapChainRenderPass()};
+    SimpleRenderSystem simpleRenderSystem{device, myRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout()};
     MyCamera camera{};
 
     // camera.setViewDirection(glm::vec3(0.f), glm::vec3(0.7f, 0.f, 1.f));
@@ -79,7 +79,7 @@ void FirstApp::run() {
 
         if (auto commandBuffer = myRenderer.beginFrame()){
             int frameIndex = myRenderer.getFrameIndex();
-            FrameInfo frameInfo{frameIndex, frameTime, commandBuffer, camera};
+            FrameInfo frameInfo{frameIndex, frameTime, commandBuffer, camera, globalDescriptorSet};
 
             // line below to update 
             GlobalUbo ubo{};
